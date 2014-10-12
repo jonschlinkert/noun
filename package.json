@@ -1,7 +1,7 @@
 {
   "name": "noun",
   "description": "Manipulate objects. Easy to use and extend.",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/jonschlinkert/noun",
   "author": {
     "name": "Jon Schlinkert",
@@ -32,12 +32,14 @@
     "noun-bar": "^0.1.0",
     "noun-baz": "^0.1.0",
     "noun-foo": "^0.1.0",
+    "noun-one": "^0.1.0",
+    "noun-three": "^0.1.0",
+    "noun-two": "^0.1.0",
     "verb": ">= 0.2.6",
     "verb-tag-jscomments": ">= 0.2.0"
   },
   "keywords": [],
   "dependencies": {
-    "for-own": "^0.1.2",
     "load-plugins": "^0.2.0"
   }
 }

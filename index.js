@@ -7,9 +7,17 @@
 
 'use strict';
 
-var forOwn = require('for-own');
 var plugins = require('load-plugins');
-var extend = require('./extend');
+var extend = require('./utils');
+
+
+/**
+ * Create an instance of `Noun` with the given
+ * `context` and `options`.
+ *
+ * @param {Object} `context`
+ * @param {Object} `options`
+ */
 
 function Noun(context, options) {
   this.options = options || {};
@@ -28,7 +36,10 @@ Noun.prototype.get = function(key) {
 };
 
 Noun.prototype.load = function() {
-  this.plugins = plugins('noun-*');
+  this.plugins = plugins('noun-*', {
+    cwd: process.cwd(),
+    omit: 'noun'
+  });
 };
 
 Noun.prototype.run = function(plugins) {
@@ -36,10 +47,11 @@ Noun.prototype.run = function(plugins) {
   var keys = Object.keys(plugins);
   var len = keys.length;
   var i = 0;
+
   while (i < len) {
     var fn = this.plugins[keys[i++]];
     this.use(fn, this.options);
-  };
+  }
 };
 
 Noun.prototype.use = function(fn, options) {
@@ -49,23 +61,3 @@ Noun.prototype.use = function(fn, options) {
 };
 
 module.exports = Noun;
-
-var noun = new Noun({});
-
-noun
-  .use(function() {
-    this.context.aaa = this.context.foo;
-  })
-  .use(function() {
-    this.context.bbb = this.context.bar;
-  })
-  .use(baz({what: 'whhhhhaaaa?'}))
-
-function baz(options) {
-  return function () {
-    // console.log(this.plugins)
-    // this.run({add: 'blah'})
-    this.context.ccc = this.context.baz;
-  }
-}
-console.log(noun);
