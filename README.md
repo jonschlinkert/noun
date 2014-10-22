@@ -2,7 +2,27 @@
 
 > `.use()` plugins to manipulate objects. Easy to use and extend. Load locally defined plugins, or define a namespace to automatically load plugins from load modules.
 
-Noun makes it easy to extend your application with basic plugin functionality. See the [examples](./example.js) and [tests](./test) for a better understanding of how Noun works.
+Noun makes it easy to extend your application with basic plugin functionality.
+
+
+## Usage
+
+```js
+var Noun = require('noun');
+```
+
+By default, plugins named `noun-*` are automatically loaded from `node_modules`. Pass a `namespace` to
+use your own naming convention:
+
+```js
+// load plugins named `my-app-*`
+var noun = new Noun('my-app');
+```
+
+_**Note** that plugins are only loaded if they are listed in `dependencies` or `devDependencies` in package.json._
+
+See the [examples](./example.js) and [tests](./test) for a better understanding of how Noun works.
+
 
 ## Install
 #### Install with [npm](npmjs.org)
@@ -15,13 +35,6 @@ npm i noun --save
 
 ```bash
 npm test
-```
-
-## Usage
-
-```js
-var Noun = require('noun');
-var noun = new Noun();
 ```
 
 ## API
