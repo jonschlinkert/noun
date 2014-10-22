@@ -100,13 +100,13 @@ Noun.prototype.loadPlugins = function(pattern) {
  * @api public
  */
 
-Noun.prototype.run = function(fns) {
-  var keys = Object.keys(fns || this.plugins);
-  var i = 0;
+Noun.prototype.run = function(plugins) {
+  plugins = plugins || this.plugins;
+  var keys = Object.keys(plugins);
 
-  while (i < keys.length) {
-    this.plugins[keys[i++]](this);
-  };
+  for (var i = 0; i < keys.length; i++) {
+    this.plugin.call(this, plugins[keys[i]], this);
+  }
 };
 
 /**
