@@ -1,7 +1,7 @@
 {
   "name": "noun",
   "description": "`.use()` plugins to manipulate objects. Easy to use and extend. Load locally defined plugins, or define a namespace to automatically load plugins from load modules.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/jonschlinkert/noun",
   "author": {
     "name": "Jon Schlinkert",
@@ -36,7 +36,17 @@
     "verb": ">= 0.2.6",
     "verb-tag-jscomments": ">= 0.2.0"
   },
-  "keywords": [],
+  "keywords": [
+    "fn",
+    "functions",
+    "load",
+    "middleware",
+    "object",
+    "plugin",
+    "plugins",
+    "run",
+    "use"
+  ],
   "dependencies": {
     "load-plugins": "^0.2.0"
   }
