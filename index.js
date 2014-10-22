@@ -7,57 +7,139 @@
 
 'use strict';
 
-var plugins = require('load-plugins');
-var extend = require('./utils');
-
+var load = require('load-plugins');
 
 /**
- * Create an instance of `Noun` with the given
- * `context` and `options`.
+ * Create an instance of `Noun` using the given
+ * `namespace`.
  *
- * @param {Object} `context`
+ * ```js
+ * var Noun = require('noun');
+ * var noun = new Noun('foo');
+ * ```
+ *
  * @param {Object} `options`
+ * @api public
  */
 
-function Noun(context, options) {
-  this.options = options || {};
-  this.context = context || {};
-  this.load(options);
-  this.run(options);
+function Noun(namespace, source) {
+  this.namespace = namespace || 'noun';
+  extend(this, source || {});
+  this.loadPlugins();
+  this.run();
 }
 
-Noun.prototype.set = function(key, value) {
-  this.context[key] = value;
+/**
+ * Define a Noun plugin.
+ *
+ * ```js
+ * noun
+ *   .plugin(foo())
+ *   .plugin(bar())
+ *   .plugin(baz())
+ * ```
+ *
+ * @param  {Function} `fn` The function to call.
+ * @return {Object} Returns `Noun` for chaining.
+ * @api public
+ */
+
+Noun.prototype.plugin = function(fn) {
+  if (fn && typeof fn === 'function') {
+    fn.apply(this, [].slice.call(arguments, 1));
+  }
   return this;
 };
 
-Noun.prototype.get = function(key) {
-  return this.context[key];
-};
+/**
+ * Called in the constructor to load plugins from `node_modules`
+ * using the given `namespace`. For example, the namespace `foo`
+ * will load plugins from the `foo-*` glob pattern.
+ *
+ * You may also call the `.loadPlugins()` method directly.
+ *
+ * ```js
+ * noun.loadPlugins('baz-*');
+ * ```
+ *
+ * @param  {String} `pattern` Optionally pass a glob pattern when calling the method directly.
+ * @return {Object} Returns an object of plugins loaded from `node_modules`.
+ * @api public
+ */
 
-Noun.prototype.load = function() {
-  this.plugins = plugins('noun-*', {
-    cwd: process.cwd(),
-    omit: 'noun'
+Noun.prototype.loadPlugins = function(pattern) {
+  var name = pattern || this.namespace + '-*';
+
+  return this.plugins = load(name, {
+    omit: this.namespace,
+    cwd: process.cwd()
   });
 };
 
-Noun.prototype.run = function(plugins) {
-  plugins = plugins || this.plugins;
-  var keys = Object.keys(plugins);
-  var len = keys.length;
+/**
+ * Run an object of plugins. By default, the `.run()` method
+ * is called in the constructor, but it may also be used directly.
+ *
+ * When used directly, each plugin is a key-value pair, where the
+ * key is the plugin name, and the value is the function to be called.
+ *
+ * Currently, the plugin name is useless, so this could have
+ * been setup to take an array. However, there are plans to
+ * add additional features to take advantage of this configuration.
+ *
+ * **Example:**
+ *
+ * ```js
+ * noun.run({'myPlugin': [function]});
+ * ```
+ *
+ * @param  {Object} `fns` Object of plugins.
+ * @api public
+ */
+
+Noun.prototype.run = function(fns) {
+  var keys = Object.keys(fns || this.plugins);
   var i = 0;
 
-  while (i < len) {
+  while (i < keys.length) {
     var fn = this.plugins[keys[i++]];
-    this.use(fn, this.options);
-  }
+    this.plugin.call(this, fn, this);
+  };
 };
 
-Noun.prototype.use = function(fn, options) {
-  var opts = extend({}, this.options, options);
-  fn.call(this, this.context, opts);
-  return this;
-};
+/**
+ * Extend `o` with properties from other objects.
+ *
+ * @param  {Object} `o`
+ * @param  {Object} `objects`
+ * @return {Object}
+ */
+
+function extend(o, objects) {
+  var args = [].slice.call(arguments, 1);
+  if (o == null) {
+    return {};
+  }
+  if (objects == null) {
+    return o;
+  }
+
+  var len = args.length;
+
+  for (var i = 0; i < len; i++) {
+    var obj = args[i];
+
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        o[key] = obj[key];
+      }
+    }
+  }
+  return o;
+}
+
+/**
+ * Expose `Noun`
+ */
 
 module.exports = Noun;
