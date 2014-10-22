@@ -25,6 +25,7 @@ var load = require('load-plugins');
 function Noun(namespace, source) {
   this._namespace = namespace || 'noun';
   extend(this, source || {});
+  this.plugins = {};
   this.loadPlugins();
   this.run();
 }
@@ -70,10 +71,12 @@ Noun.prototype.plugin = function(fn) {
 Noun.prototype.loadPlugins = function(pattern) {
   var name = pattern || this._namespace + '-*';
 
-  return this.plugins = load(name, {
+  extend(this.plugins, load(name, {
     omit: this._namespace,
     cwd: process.cwd()
-  });
+  }));
+
+  return this.plugins;
 };
 
 /**
