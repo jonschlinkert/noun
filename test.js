@@ -30,7 +30,7 @@ describe('noun', function () {
   describe('namespace', function () {
     it('should define a namespace', function () {
       var noun = new Noun('foo');
-      noun.namespace.should.equal('foo');
+      noun._namespace.should.equal('foo');
     });
 
     it('should use the given namespace to load plugins from node_modules', function () {

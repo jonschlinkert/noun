@@ -49,7 +49,7 @@ var Noun = require('noun');
 var noun = new Noun('foo');
 ```
 
-### [.plugin](index.js#L47)
+### [.plugin](index.js#L48)
 
 Define a Noun plugin.
 
@@ -63,7 +63,7 @@ noun
   .plugin(baz())
 ```
 
-### [.loadPlugins](index.js#L70)
+### [.loadPlugins](index.js#L71)
 
 Called in the constructor to load plugins from `node_modules` using the given `namespace`. For example, the namespace `foo` will load plugins from the `foo-*` glob pattern.
 
@@ -76,7 +76,7 @@ You may also call the `.loadPlugins()` method directly.
 noun.loadPlugins('baz-*');
 ```
 
-### [.run](index.js#L100)
+### [.run](index.js#L103)
 
 Run an object of plugins. By default, the `.run()` method is called in the constructor, but it may also be used directly.
 

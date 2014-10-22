@@ -105,8 +105,7 @@ Noun.prototype.run = function(fns) {
   var i = 0;
 
   while (i < keys.length) {
-    var fn = this.plugins[keys[i++]];
-    this.plugin.call(this, fn, this);
+    this.plugins[keys[i++]](this);
   };
 };
 
