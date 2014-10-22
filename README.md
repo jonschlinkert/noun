@@ -11,8 +11,11 @@ Noun makes it easy to extend your application with basic plugin functionality.
 var Noun = require('noun');
 ```
 
-By default, plugins named `noun-*` are automatically loaded from `node_modules`. Pass a `namespace` to
-use your own naming convention:
+### npm plugins
+
+By default, plugins named `noun-*` are automatically loaded from `node_modules`.
+
+Pass a `namespace` to use your own naming convention:
 
 ```js
 // load plugins named `my-app-*`
@@ -23,6 +26,13 @@ _**Note** that plugins are only loaded if they are listed in `dependencies` or `
 
 See the [examples](./example.js) and [tests](./test) for a better understanding of how Noun works.
 
+### local plugins
+
+For local plugins, simply use a leading dot `./` in the path, just like `require()` rules:
+
+```js
+noun.loadPlugins('./plugins/*.js');
+```
 
 ## Install
 #### Install with [npm](npmjs.org)

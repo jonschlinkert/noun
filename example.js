@@ -9,8 +9,11 @@ var Noun = require('./');
  */
 
 function App(options) {
-  Noun.call(this, 'app');
+  Noun.call(this, 'app-plugin');
   this.context = {};
+
+  // or you can do this
+  // this.plugins = new Noun('app-plugin');
 }
 util.inherits(App, Noun);
 

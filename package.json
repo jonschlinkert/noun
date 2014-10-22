@@ -1,7 +1,7 @@
 {
   "name": "noun",
   "description": "`.use()` plugins to manipulate objects. Easy to use and extend. Load locally defined plugins, or define a namespace to automatically load plugins from load modules.",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "homepage": "https://github.com/jonschlinkert/noun",
   "author": {
     "name": "Jon Schlinkert",

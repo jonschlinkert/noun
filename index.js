@@ -23,7 +23,7 @@ var load = require('load-plugins');
  */
 
 function Noun(namespace, source) {
-  this._namespace = namespace || 'noun';
+  this.namespace = namespace || 'noun';
   extend(this, source || {});
   this.plugins = {};
   this.loadPlugins();
@@ -69,10 +69,10 @@ Noun.prototype.plugin = function(fn) {
  */
 
 Noun.prototype.loadPlugins = function(pattern) {
-  var name = pattern || this._namespace + '-*';
+  var name = pattern || this.namespace + '-*';
 
   extend(this.plugins, load(name, {
-    omit: this._namespace,
+    omit: this.namespace,
     cwd: process.cwd()
   }));
 

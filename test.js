@@ -30,7 +30,7 @@ describe('noun', function () {
   describe('namespace', function () {
     it('should define a namespace', function () {
       var noun = new Noun('foo');
-      noun._namespace.should.equal('foo');
+      noun.namespace.should.equal('foo');
     });
 
     it('should use the given namespace to load plugins from node_modules', function () {
@@ -74,14 +74,14 @@ describe('noun', function () {
 
   describe('.loadPlugins()', function () {
     it('should allow local plugins to be loaded.', function () {
-      noun.loadPlugins('fixtures/*.js');
+      noun.loadPlugins('./fixtures/*.js');
       noun.plugins.should.have.property('a');
       noun.plugins.should.have.property('b');
       noun.plugins.should.have.property('c');
     });
 
     it('should return an object of plugins.', function () {
-      var plugins = noun.loadPlugins('fixtures/*.js');
+      var plugins = noun.loadPlugins('./fixtures/*.js');
       plugins.should.have.property('a');
       plugins.should.have.property('b');
       plugins.should.have.property('c');
@@ -90,7 +90,7 @@ describe('noun', function () {
 
   describe('.run()', function () {
     it('should run plugins that are directly passed to the method.', function () {
-      var plugins = noun.loadPlugins('fixtures/*.js');
+      var plugins = noun.loadPlugins('./fixtures/*.js');
       noun.run(plugins);
 
       noun.should.have.property('a', 'aaa');
