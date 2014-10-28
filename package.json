@@ -48,6 +48,7 @@
     "use"
   ],
   "dependencies": {
-    "load-plugins": "^0.2.0"
+    "array-slice": "^0.2.2",
+    "load-plugins": "^0.2.4"
   }
 }

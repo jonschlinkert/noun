@@ -60,15 +60,15 @@ describe('noun', function () {
       var noun = new Noun('app', {source: {a: 'a'}});
       noun
         .plugin(function () {
-          this.source.b = 'b';
+          this.source.b = this.source.a + 'b'
         })
         .plugin(function () {
-          this.source.c = 'c';
+          this.source.c = this.source.b + 'c';
         })
 
       noun.source.should.have.property('a', 'a');
-      noun.source.should.have.property('b', 'b');
-      noun.source.should.have.property('c', 'c');
+      noun.source.should.have.property('b', 'ab');
+      noun.source.should.have.property('c', 'abc');
     });
   });
 
@@ -88,10 +88,10 @@ describe('noun', function () {
     });
   });
 
-  describe('.run()', function () {
-    it('should run plugins that are directly passed to the method.', function () {
+  describe('.runPlugins()', function () {
+    it('should runPlugins plugins that are directly passed to the method.', function () {
       var plugins = noun.loadPlugins('./fixtures/*.js');
-      noun.run(plugins);
+      noun.runPlugins(plugins);
 
       noun.should.have.property('a', 'aaa');
       noun.should.have.property('b', 'bbb');

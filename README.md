@@ -48,20 +48,21 @@ npm test
 ```
 
 ## API
-### [Noun](index.js#L25)
+### [Noun](index.js#L26)
 
-Create an instance of `Noun` using the given `namespace`.
+Create an instance of `Noun` with the given `namespace`.
 
-* `options` **{Object}**    
+* `namespace` **{Object}**: Used to automatically load plugins from node_modules.    
+* `source` **{Object}**: Pass an object to directly extend the `this` object.    
 
 ```js
 var Noun = require('noun');
 var noun = new Noun('foo');
 ```
 
-### [.plugin](index.js#L48)
+### [.plugin](index.js#L49)
 
-Define a Noun plugin.
+Define a plugin.
 
 * `fn` **{Function}**: The function to call.    
 * `returns` **{Object}**: Returns `Noun` for chaining.  
@@ -73,20 +74,25 @@ noun
   .plugin(baz())
 ```
 
-### [.loadPlugins](index.js#L71)
+### [.loadPlugins](index.js#L75)
 
-Called in the constructor to load plugins from `node_modules` using the given `namespace`. For example, the namespace `foo` will load plugins from the `foo-*` glob pattern.
+Load plugins.
 
 * `pattern` **{String}**: Optionally pass a glob pattern when calling the method directly.    
 * `returns` **{Object}**: Returns an object of plugins loaded from `node_modules`.  
 
-You may also call the `.loadPlugins()` method directly.
+Called in the constructor to load plugins from `node_modules`
+using the given `namespace`, but you may also call the method
+directly.
+
+For example, the namespace `foo` would load plugins using the
+`foo-*` glob pattern, e.g:
 
 ```js
-noun.loadPlugins('baz-*');
+noun.loadPlugins('foo-*');
 ```
 
-### [.runPlugins](index.js#L103)
+### [.runPlugins](index.js#L107)
 
 Run an object of plugins. By default, the `.runPlugins()` method is called in the constructor, but it may also be used directly.
 

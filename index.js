@@ -8,17 +8,18 @@
 'use strict';
 
 var load = require('load-plugins');
+var slice = require('array-slice');
 
 /**
- * Create an instance of `Noun` using the given
- * `namespace`.
+ * Create an instance of `Noun` with the given `namespace`.
  *
  * ```js
  * var Noun = require('noun');
  * var noun = new Noun('foo');
  * ```
  *
- * @param {Object} `options`
+ * @param {Object} `namespace` Used to automatically load plugins from node_modules.
+ * @param {Object} `source` Pass an object to directly extend the `this` object.
  * @api public
  */
 
@@ -27,11 +28,11 @@ function Noun(namespace, source) {
   extend(this, source || {});
   this.plugins = {};
   this.loadPlugins();
-  this.run();
+  this.runPlugins();
 }
 
 /**
- * Define a Noun plugin.
+ * Define a plugin.
  *
  * ```js
  * noun
@@ -47,20 +48,23 @@ function Noun(namespace, source) {
 
 Noun.prototype.plugin = function(fn) {
   if (fn && typeof fn === 'function') {
-    fn.apply(this, [].slice.call(arguments, 1));
+    fn.apply(this, slice(arguments, 1));
   }
   return this;
 };
 
 /**
- * Called in the constructor to load plugins from `node_modules`
- * using the given `namespace`. For example, the namespace `foo`
- * will load plugins from the `foo-*` glob pattern.
+ * Load plugins.
  *
- * You may also call the `.loadPlugins()` method directly.
+ * Called in the constructor to load plugins from `node_modules`
+ * using the given `namespace`, but you may also call the method
+ * directly.
+ *
+ * For example, the namespace `foo` would load plugins using the
+ * `foo-*` glob pattern, e.g:
  *
  * ```js
- * noun.loadPlugins('baz-*');
+ * noun.loadPlugins('foo-*');
  * ```
  *
  * @param  {String} `pattern` Optionally pass a glob pattern when calling the method directly.
@@ -80,7 +84,7 @@ Noun.prototype.loadPlugins = function(pattern) {
 };
 
 /**
- * Run an object of plugins. By default, the `.run()` method
+ * Run an object of plugins. By default, the `.runPlugins()` method
  * is called in the constructor, but it may also be used directly.
  *
  * When used directly, each plugin is a key-value pair, where the
@@ -93,14 +97,14 @@ Noun.prototype.loadPlugins = function(pattern) {
  * **Example:**
  *
  * ```js
- * noun.run({'myPlugin': [function]});
+ * noun.runPlugins({'myPlugin': [function]});
  * ```
  *
  * @param  {Object} `fns` Object of plugins.
  * @api public
  */
 
-Noun.prototype.run = function(plugins) {
+Noun.prototype.runPlugins = function(plugins) {
   plugins = plugins || this.plugins;
   var keys = Object.keys(plugins);
 
@@ -118,7 +122,7 @@ Noun.prototype.run = function(plugins) {
  */
 
 function extend(o, objects) {
-  var args = [].slice.call(arguments, 1);
+  var args = slice(arguments, 1);
   if (o == null) {
     return {};
   }
@@ -127,12 +131,12 @@ function extend(o, objects) {
   }
 
   var len = args.length;
+  var i = 0;
 
-  for (var i = 0; i < len; i++) {
-    var obj = args[i];
-
+  while (len--) {
+    var obj = args[i++];
     for (var key in obj) {
-      if (obj.hasOwnProperty(key)) {
+      if (Boolean(obj[key])) {
         o[key] = obj[key];
       }
     }
